@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+
 import { SignOutButton, SignedIn, SignedOut,SignInButton, useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import Image from "next/image";
@@ -26,6 +27,7 @@ export default function Home() {
       })}
       
       <Button onClick={() => {
+        if(!orgId) return;
         if(!orgId) return;
         createFile({
           name: "Hello World!",
