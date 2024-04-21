@@ -4,7 +4,7 @@ import { OrganizationSwitcher, SignInButton, SignedOut, UserButton } from "@cler
 export function Header() {
     return <div className="border-b py-4 bg-gray-50">
         <div className="items-center container mx-auto justify-between flex">
-            <div>
+            <div className="text-2xl font-bold text-[#51a1c4]">
             DoraPocket
             </div>
             <div className="flex gap-2">
