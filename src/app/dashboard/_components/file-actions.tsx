@@ -18,7 +18,7 @@ import {
     AlertDialogTitle,
   } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
 import { Protect } from "@clerk/nextjs";
@@ -31,6 +31,7 @@ export function FileCardActions({ file, isFavorited }: { file: Doc<"files">; isF
     
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const { toast } = useToast();
+    const me = useQuery(api.users.getMe);
     return(
         <>
         <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
@@ -92,7 +93,11 @@ export function FileCardActions({ file, isFavorited }: { file: Doc<"files">; isF
 
 
             <Protect
-            role="org:admin"
+            condition={(check) => {
+                return check({
+                    role: "org:admin",
+                }) || file.userId === me?._id
+            }}
             fallback={<></>} >
             <DropdownMenuSeparator />
             <DropdownMenuItem 
