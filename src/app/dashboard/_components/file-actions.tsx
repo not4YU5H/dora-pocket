@@ -24,7 +24,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { Protect } from "@clerk/nextjs";
 
 
-export function FileCardActions({ file, isFavorited }: { file: Doc<"files">; isFavorited: boolean }) {
+export function FileCardActions({ file, isFavorited }: { 
+    // file: Doc<"files">;
+    file: Doc<"files"> & { url: string | null }; 
+    isFavorited: boolean }) {
     const deleteFile = useMutation(api.files.deleteFile);
     const restoreFile = useMutation(api.files.restoreFile);
     const toggleFavorite = useMutation(api.files.toggleFavorite);
@@ -64,7 +67,9 @@ export function FileCardActions({ file, isFavorited }: { file: Doc<"files">; isF
         <DropdownMenuContent>
         <DropdownMenuItem 
             onClick={() => {
-                window.open(getFileUrl(file.fileId), "_blank");
+                // window.open(getFileUrl(file.fileId), "_blank");
+                if (!file.url) return;
+                window.open(file.url, "_blank");
             }}
             className="flex gap-1 items-center cursor-pointer">
                 <DownloadIcon className="w-4 h-4" /> Download
@@ -128,7 +133,7 @@ export function FileCardActions({ file, isFavorited }: { file: Doc<"files">; isF
     );
 }
 
-export function getFileUrl(fileId: Id<"_storage">): string {
-    return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
-}
+// export function getFileUrl(fileId: Id<"_storage">): string {
+//     return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
+// }
 
